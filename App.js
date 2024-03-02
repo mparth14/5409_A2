@@ -29,19 +29,11 @@ pool.getConnection((err, connection) => {
 // Middleware
 app.use(bodyParser.json());
 
-// Middleware
-app.use(bodyParser.json());
-
-// Dummy products data (to be replaced with database interaction)
-let products = [];
-
-// POST endpoint to handle storing products
 // POST endpoint to handle storing products
 app.post('/store-products', (req, res) => {
   const { products } = req.body;
-  console.log("products request: ", products);
+  console.log('Received POST request to store products:', products);
 
-  // Assuming database interaction to store products
   pool.query(
     'INSERT INTO products (name, price, availability) VALUES ?',
     [
@@ -56,7 +48,7 @@ app.post('/store-products', (req, res) => {
         console.error('Error storing products: ', error);
         return res.status(500).json({ error: 'Error storing products.' });
       }
-	console.log(" products stored successfully");
+      console.log('Products stored successfully');
       return res.status(200).json({ message: 'Products stored successfully.' });
     },
   );
@@ -64,12 +56,14 @@ app.post('/store-products', (req, res) => {
 
 // GET endpoint to retrieve products
 app.get('/list-products', (req, res) => {
-  // Assuming database interaction to retrieve products
+  console.log('Received GET request to retrieve products');
+
   pool.query('SELECT * FROM products', (error, results, fields) => {
     if (error) {
       console.error('Error retrieving products: ', error);
       return res.status(500).json({ error: 'Error retrieving products.' });
     }
+    console.log('Retrieved products successfully');
     return res.status(200).json({ products: results });
   });
 });
