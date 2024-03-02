@@ -7,10 +7,10 @@ const PORT = process.env.PORT || 3000;
 const mysql = require('mysql2');
 
 const pool = mysql.createPool({
-  host: 'assignment2.cb6q4ciuo7aj.us-east-1.rds.amazonaws.com',
+  host: 'computeassignment.cb6q4ciuo7aj.us-east-1.rds.amazonaws.com',
   user: 'admin',
-  password: 'admin123',
-  database: 'sys',
+  password: 'admin1234',
+  database: 'productsDB',
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
@@ -39,6 +39,7 @@ let products = [];
 // POST endpoint to handle storing products
 app.post('/store-products', (req, res) => {
   const { products } = req.body;
+  console.log("products request: ", products);
 
   // Assuming database interaction to store products
   pool.query(
@@ -55,6 +56,7 @@ app.post('/store-products', (req, res) => {
         console.error('Error storing products: ', error);
         return res.status(500).json({ error: 'Error storing products.' });
       }
+	console.log(" products stored successfully");
       return res.status(200).json({ message: 'Products stored successfully.' });
     },
   );
