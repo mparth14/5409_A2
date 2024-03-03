@@ -7,10 +7,10 @@ const PORT = process.env.PORT || 3000;
 const mysql = require('mysql2');
 
 const pool = mysql.createPool({
-  host: 'computeassignment.cb6q4ciuo7aj.us-east-1.rds.amazonaws.com',
+  host: 'a25409.cb6q4ciuo7aj.us-east-1.rds.amazonaws.com',
   user: 'admin',
   password: 'admin1234',
-  database: 'productsDB',
+  database: 'a25409',
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
@@ -64,9 +64,15 @@ app.get('/list-products', (req, res) => {
       return res.status(500).json({ error: 'Error retrieving products.' });
     }
     console.log('Retrieved products successfully');
-    return res.status(200).json({ products: results });
+    const formattedProducts = results.map((product) => ({
+      name: product.name,
+      price: product.price,
+      availability: product.availability === 1 ? true : false,
+    }));
+    return res.status(200).json({ products: formattedProducts });
   });
 });
+
 
 // Start the server
 app.listen(PORT, () => {
